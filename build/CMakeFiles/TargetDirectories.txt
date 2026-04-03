@@ -1,3 +1,0 @@
-/Users/vasylshtoiko/Desktop/Fpv/fpv-ip-opt/tdi_reader/build/CMakeFiles/tdi_reader.dir
-/Users/vasylshtoiko/Desktop/Fpv/fpv-ip-opt/tdi_reader/build/CMakeFiles/edit_cache.dir
-/Users/vasylshtoiko/Desktop/Fpv/fpv-ip-opt/tdi_reader/build/CMakeFiles/rebuild_cache.dir
