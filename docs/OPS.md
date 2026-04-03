@@ -67,7 +67,7 @@ sudo journalctl -u tdi_reader -f
 Automatic:
 
 ```bash
-sudo bash scripts/update_linux.sh
+bash scripts/update_linux.sh
 ```
 
 Manual:

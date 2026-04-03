@@ -103,14 +103,14 @@ sudo journalctl -u tdi_reader -f
 Automated update:
 
 ```bash
-sudo bash scripts/update_linux.sh
+bash scripts/update_linux.sh
 ```
 
 What the update script does:
 
 - runs `git pull --ff-only` in the current repository
 - rebuilds the project
-- restarts the `systemd` service
+- restarts the `systemd` service through `sudo` when needed
 
 Manual update flow:
 
