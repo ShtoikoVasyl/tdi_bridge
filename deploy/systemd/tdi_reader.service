@@ -1,0 +1,17 @@
+[Unit]
+Description=FTDI to CRSF bridge
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=tdi_reader
+Group=dialout
+WorkingDirectory=/opt/tdi_reader/current
+ExecStart=/opt/tdi_reader/current/build/tdi_reader /etc/tdi_reader/config.yaml
+Restart=always
+RestartSec=2
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

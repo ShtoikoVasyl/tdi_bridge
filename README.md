@@ -24,9 +24,9 @@ listen_address: 0.0.0.0
 listen_port: 9000
 serial_baud: 420000
 serial_device:
-device_hint: ftdi
-vendor_id: 0x0403
-product_id: 0x6001
+  device_hint: ftdi
+  vendor_id: 0x0403
+  product_id: 0x6001
 raw_mode: false
 log_level: info
 reconnect_delay_ms: 2000
@@ -44,3 +44,12 @@ cmake --build build
 ```bash
 ./build/tdi_reader config/config.yaml
 ```
+
+## Deployment
+
+Deployment instructions and helper scripts are available in:
+
+- `docs/DEPLOYMENT.md`
+- `deploy/systemd/tdi_reader.service`
+- `scripts/install_linux.sh`
+- `scripts/update_linux.sh`
