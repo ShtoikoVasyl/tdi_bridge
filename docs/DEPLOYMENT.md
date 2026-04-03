@@ -141,6 +141,6 @@ The default config uses:
 serial_baud: 420000
 ```
 
-The current code uses standard `termios` speed constants. On some Linux systems, `420000` may not work until the project is extended with `termios2` and `BOTHER` support for custom baud rates.
+The serial layer first tries exact `420000` on Linux through `termios2` and `BOTHER`.
 
-If your adapter or kernel does not accept that speed, use a standard supported baud rate or extend the serial layer before production rollout.
+If the adapter, driver, or kernel still rejects it, the app falls back to the nearest supported standard baudrate and logs that downgrade. For CRSF, you should still verify on the target hardware that the exact rate is really accepted.

@@ -65,7 +65,9 @@ bool BridgeController::connect_serial() {
         return false;
     }
 
-    app::Logger::instance().info("Serial connected: " + *device + " @ " + std::to_string(config_.serial_baud));
+    app::Logger::instance().info("Serial connected: " + *device +
+                                 ", requested baud=" + std::to_string(config_.serial_baud) +
+                                 ", applied baud=" + std::to_string(serial_port_.actual_baud_rate()));
     return true;
 }
 

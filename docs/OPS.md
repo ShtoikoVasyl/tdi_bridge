@@ -101,4 +101,6 @@ Default config uses:
 serial_baud: 420000
 ```
 
-The current serial implementation uses standard `termios` baud constants. On some Linux systems, `420000` may not work without adding `termios2`/`BOTHER` support.
+The serial layer now tries exact `420000` on Linux through `termios2`/`BOTHER`.
+
+If the kernel, FTDI driver, or adapter still rejects that rate, the app falls back to the nearest supported standard baudrate and writes a warning to `journalctl`.
