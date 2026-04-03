@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-INSTALL_ROOT="${INSTALL_ROOT:-/opt/tdi_reader}"
-BRANCH="${BRANCH:-main}"
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+BUILD_DIR="${BUILD_DIR:-${PROJECT_ROOT}/build-linux}"
 SERVICE_NAME="${SERVICE_NAME:-tdi_reader}"
 
 if [[ "$(id -u)" -ne 0 ]]; then
@@ -10,17 +10,14 @@ if [[ "$(id -u)" -ne 0 ]]; then
   exit 1
 fi
 
-if [[ ! -d "${INSTALL_ROOT}/repo/.git" ]]; then
-  echo "Repository not found at ${INSTALL_ROOT}/repo"
+if [[ ! -d "${PROJECT_ROOT}/.git" ]]; then
+  echo "Repository not found at ${PROJECT_ROOT}"
   exit 1
 fi
 
-git -C "${INSTALL_ROOT}/repo" fetch --all --tags
-git -C "${INSTALL_ROOT}/repo" checkout "${BRANCH}"
-git -C "${INSTALL_ROOT}/repo" pull --ff-only origin "${BRANCH}"
-
-cmake -S "${INSTALL_ROOT}/repo" -B "${INSTALL_ROOT}/repo/build"
-cmake --build "${INSTALL_ROOT}/repo/build" --config Release -j"$(nproc)"
+git -C "${PROJECT_ROOT}" pull --ff-only
+cmake -S "${PROJECT_ROOT}" -B "${BUILD_DIR}"
+cmake --build "${BUILD_DIR}" --config Release -j"$(nproc)"
 
 systemctl restart "${SERVICE_NAME}"
 systemctl --no-pager --full status "${SERVICE_NAME}"

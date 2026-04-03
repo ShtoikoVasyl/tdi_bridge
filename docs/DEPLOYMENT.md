@@ -1,6 +1,11 @@
 # Linux Deployment Guide
 
-This document describes a practical server-side install flow for `tdi_reader` on Linux with `systemd`.
+This document describes a practical install flow for `tdi_reader` on Linux with `systemd`.
+
+The expected starting point is:
+
+- the repository is already cloned
+- you run commands from the repository root
 
 ## 1. Prepare the Linux environment
 
@@ -31,16 +36,10 @@ If the service user must access the device, it should be in the `dialout` group.
 
 ## 2. Install and build from the repository
 
-Automated install:
+Automated install from the repository root:
 
 ```bash
-sudo bash scripts/install_linux.sh <repo-url> [branch]
-```
-
-Example:
-
-```bash
-sudo bash scripts/install_linux.sh https://github.com/your-org/tdi_reader.git main
+sudo bash scripts/install_linux.sh
 ```
 
 What the script does:
@@ -48,18 +47,15 @@ What the script does:
 - installs build dependencies
 - creates the `tdi_reader` system user if needed
 - adds that user to `dialout`
-- clones or updates the repository into `/opt/tdi_reader/repo`
-- builds the binary with CMake
+- builds the binary from the current repository
 - creates `/etc/tdi_reader/config.yaml` if it does not already exist
 - installs and enables the `systemd` service
 
 Manual build flow:
 
 ```bash
-git clone <repo-url>
-cd tdi_reader
-cmake -S . -B build
-cmake --build build --config Release -j"$(nproc)"
+cmake -S . -B build-linux
+cmake --build build-linux --config Release -j"$(nproc)"
 ```
 
 ## 3. Run, stop, restart
@@ -110,31 +106,32 @@ Automated update:
 sudo bash scripts/update_linux.sh
 ```
 
-If you deploy from a branch other than `main`:
-
-```bash
-sudo BRANCH=develop bash scripts/update_linux.sh
-```
-
 What the update script does:
 
-- fetches the latest code
-- checks out the target branch
-- pulls the latest commits
+- runs `git pull --ff-only` in the current repository
 - rebuilds the project
 - restarts the `systemd` service
 
 Manual update flow:
 
 ```bash
-cd /opt/tdi_reader/repo
-git fetch --all --tags
-git checkout main
-git pull --ff-only origin main
-cmake -S . -B build
-cmake --build build --config Release -j"$(nproc)"
+git pull --ff-only
+cmake -S . -B build-linux
+cmake --build build-linux --config Release -j"$(nproc)"
 sudo systemctl restart tdi_reader
 ```
+
+## Why `build-linux` is used
+
+The project may already contain another CMake build directory created from a different absolute source path.
+
+To avoid cache/source mismatches such as:
+
+```text
+CMake Error: The source ".../CMakeLists.txt" does not match the source "..."
+```
+
+the deployment scripts use a dedicated `build-linux` directory.
 
 ## Important note about serial baud rate
 

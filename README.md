@@ -35,20 +35,21 @@ reconnect_delay_ms: 2000
 ## Build
 
 ```bash
-cmake -S . -B build
-cmake --build build
+cmake -S . -B build-linux
+cmake --build build-linux
 ```
 
 ## Run
 
 ```bash
-./build/tdi_reader config/config.yaml
+./build-linux/tdi_reader config/config.yaml
 ```
 
 ## Deployment
 
 Deployment instructions and helper scripts are available in:
 
+- `docs/OPS.md`
 - `docs/DEPLOYMENT.md`
 - `deploy/systemd/tdi_reader.service`
 - `scripts/install_linux.sh`
