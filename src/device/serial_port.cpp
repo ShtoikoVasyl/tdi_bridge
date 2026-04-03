@@ -11,8 +11,42 @@
 #include <unistd.h>
 
 #if defined(__linux__)
-#include <asm/termbits.h>
 #include <sys/ioctl.h>
+
+#ifndef NCCS
+#define NCCS 19
+#endif
+
+#ifndef BOTHER
+#define BOTHER 0010000
+#endif
+
+#ifndef CBAUD
+#define CBAUD 0010017
+#endif
+
+#ifndef IBSHIFT
+#define IBSHIFT 16
+#endif
+
+#ifndef TCGETS2
+#define TCGETS2 _IOR('T', 0x2A, struct termios2)
+#endif
+
+#ifndef TCSETS2
+#define TCSETS2 _IOW('T', 0x2B, struct termios2)
+#endif
+
+struct termios2 {
+    tcflag_t c_iflag;
+    tcflag_t c_oflag;
+    tcflag_t c_cflag;
+    tcflag_t c_lflag;
+    cc_t c_line;
+    cc_t c_cc[NCCS];
+    speed_t c_ispeed;
+    speed_t c_ospeed;
+};
 #endif
 
 namespace device {
