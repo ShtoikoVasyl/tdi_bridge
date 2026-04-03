@@ -5,8 +5,9 @@ Wants=network-online.target
 
 [Service]
 Type=simple
-User=tdi_reader
-Group=dialout
+User=__APP_USER__
+Group=__APP_GROUP__
+SupplementaryGroups=dialout
 WorkingDirectory=__PROJECT_ROOT__
 ExecStart=__PROJECT_ROOT__/build-linux/tdi_reader __CONFIG_PATH__
 Restart=always

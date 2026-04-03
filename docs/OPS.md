@@ -18,7 +18,8 @@ sudo bash scripts/install_linux.sh
 The first run will:
 
 - install dependencies
-- create the `tdi_reader` service user
+- use your current Linux user as the service user when the repo lives under `/home/<user>/...`
+- otherwise create and use the `tdi_reader` service user
 - build the project into `build-linux`
 - install `/etc/tdi_reader/config.yaml`
 - register and start the `tdi_reader` systemd service

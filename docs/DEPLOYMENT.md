@@ -45,8 +45,9 @@ sudo bash scripts/install_linux.sh
 What the script does:
 
 - installs build dependencies
-- creates the `tdi_reader` system user if needed
-- adds that user to `dialout`
+- uses your current Linux user as the service user when the repo is under `/home/<user>/...`
+- otherwise creates the `tdi_reader` system user if needed
+- adds the chosen service user to `dialout`
 - builds the binary from the current repository
 - creates `/etc/tdi_reader/config.yaml` if it does not already exist
 - installs and enables the `systemd` service
