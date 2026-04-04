@@ -5,12 +5,11 @@ PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 BUILD_DIR="${BUILD_DIR:-${PROJECT_ROOT}/build-linux}"
 SERVICE_NAME="${SERVICE_NAME:-tdi_reader}"
 
-if [[ ! -d "${PROJECT_ROOT}/.git" ]]; then
-  echo "Repository not found at ${PROJECT_ROOT}"
+if [[ ! -f "${PROJECT_ROOT}/CMakeLists.txt" ]]; then
+  echo "Project root not found at ${PROJECT_ROOT}"
   exit 1
 fi
 
-git -C "${PROJECT_ROOT}" pull --ff-only
 cmake -S "${PROJECT_ROOT}" -B "${BUILD_DIR}"
 cmake --build "${BUILD_DIR}" --config Release -j"$(nproc)"
 

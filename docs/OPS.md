@@ -74,7 +74,6 @@ bash scripts/update_linux.sh
 Manual:
 
 ```bash
-git pull --ff-only
 cmake -S . -B build-linux
 cmake --build build-linux --config Release -j"$(nproc)"
 sudo systemctl restart tdi_reader
@@ -94,7 +93,97 @@ After config changes:
 sudo systemctl restart tdi_reader
 ```
 
-## 7. Important note
+## 7. Useful checks
+
+Show the active service unit:
+
+```bash
+systemctl cat tdi_reader
+```
+
+Show service status with full errors:
+
+```bash
+sudo systemctl status tdi_reader --no-pager -l
+```
+
+Show recent logs:
+
+```bash
+sudo journalctl -u tdi_reader -n 100 --no-pager
+```
+
+Follow logs in realtime:
+
+```bash
+sudo journalctl -u tdi_reader -f
+```
+
+Show the real runtime config file:
+
+```bash
+sudo cat /etc/tdi_reader/config.yaml
+```
+
+Check whether port `9000` is listening:
+
+```bash
+ss -ltnup | grep 9000
+```
+
+Check only TCP listener:
+
+```bash
+ss -ltn | grep 9000
+```
+
+Check only UDP listener:
+
+```bash
+ss -lun | grep 9000
+```
+
+Check FTDI/USB serial devices:
+
+```bash
+ls /dev/ttyUSB*
+ls -l /dev/serial/by-id
+```
+
+Check whether the FTDI driver is loaded:
+
+```bash
+lsmod | grep ftdi_sio
+```
+
+Show USB devices:
+
+```bash
+lsusb
+```
+
+Check access rights for the serial device:
+
+```bash
+id
+groups
+ls -l /dev/ttyUSB0
+```
+
+Check firewall state:
+
+```bash
+sudo ufw status
+sudo iptables -L -n
+```
+
+Check path permissions if systemd cannot `chdir`:
+
+```bash
+namei -l /home/$USER/Desktop/tdi_bridge
+```
+
+## 8. Important note
 
 Default config uses:
 

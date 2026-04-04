@@ -109,14 +109,13 @@ bash scripts/update_linux.sh
 
 What the update script does:
 
-- runs `git pull --ff-only` in the current repository
+- rebuilds from the current local repository state
 - rebuilds the project
 - restarts the `systemd` service through `sudo` when needed
 
 Manual update flow:
 
 ```bash
-git pull --ff-only
 cmake -S . -B build-linux
 cmake --build build-linux --config Release -j"$(nproc)"
 sudo systemctl restart tdi_reader
@@ -133,6 +132,96 @@ CMake Error: The source ".../CMakeLists.txt" does not match the source "..."
 ```
 
 the deployment scripts use a dedicated `build-linux` directory.
+
+## Useful commands
+
+Show the installed systemd unit:
+
+```bash
+systemctl cat tdi_reader
+```
+
+Show detailed service status:
+
+```bash
+sudo systemctl status tdi_reader --no-pager -l
+```
+
+Show recent service logs:
+
+```bash
+sudo journalctl -u tdi_reader -n 100 --no-pager
+```
+
+Watch service logs live:
+
+```bash
+sudo journalctl -u tdi_reader -f
+```
+
+Show the actual runtime config:
+
+```bash
+sudo cat /etc/tdi_reader/config.yaml
+```
+
+Check whether the app listens on port `9000`:
+
+```bash
+ss -ltnup | grep 9000
+```
+
+Check TCP listener only:
+
+```bash
+ss -ltn | grep 9000
+```
+
+Check UDP listener only:
+
+```bash
+ss -lun | grep 9000
+```
+
+Show FTDI serial devices:
+
+```bash
+ls /dev/ttyUSB*
+ls -l /dev/serial/by-id
+```
+
+Show USB devices:
+
+```bash
+lsusb
+```
+
+Check the FTDI kernel driver:
+
+```bash
+lsmod | grep ftdi_sio
+```
+
+Check device access permissions:
+
+```bash
+id
+groups
+ls -l /dev/ttyUSB0
+```
+
+Check path permissions for systemd:
+
+```bash
+namei -l /home/$USER/Desktop/tdi_bridge
+```
+
+Check firewall rules:
+
+```bash
+sudo ufw status
+sudo iptables -L -n
+```
 
 ## Important note about serial baud rate
 
